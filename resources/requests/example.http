@@ -1,0 +1,5 @@
+POST {{host}}/snippets
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+
+{"snippet": {"text" : "hello-world-jwt"}}
