@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<meta charset="utf-8" />
+<title>WebSocket test</title>
+  <head>      
+      <script language="javascript" type = "text/javascript">
+          var ws;
+
+          function openWebSocket(){
+              ws = new WebSocket("ws://localhost:8080/chat");
+
+              // Then you can send a message
+              ws.onopen = function () {
+                  ws.send("Ping");
+              };
+
+              //Log the messages that are returned from the server
+              ws.onmessage = function (e) {
+                  console.log("From Server:" + e.data);
+              };
+          }
+          function closeWebSocket(){
+              //Close the connection
+              ws.close();
+          }
+         function senMessage(msg){
+             ws.send(msg);
+         }
+      </script>     
+   </head>
+
+<html>
+    <button id="button-one" onclick="openWebSocket()">Open webSocket</button>
+    <label>Fruit: <input type="text" name="msg" dirname="msg" id="msg"></label>
+    <button id="button-two" onclick="senMessage(document.getElementById('msg').value)">Send Message</button>
+    <button id="button-three" onclick="closeWebSocket()">Close webSocket</button>
+</html>

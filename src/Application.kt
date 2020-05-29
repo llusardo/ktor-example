@@ -4,9 +4,7 @@ import com.example.controllers.authRoutes
 import com.example.controllers.snippetRoutes
 import com.example.exceptions.InvalidCredentialsException
 import com.example.jwt.SimpleJWT
-import com.example.model.PostSnippet
-import com.example.model.Snippet
-import com.example.model.User
+import com.example.websocket.chatWebSocketRoute
 import io.ktor.application.*
 import io.ktor.auth.*
 import io.ktor.auth.jwt.jwt
@@ -15,9 +13,10 @@ import io.ktor.routing.*
 import io.ktor.features.ContentNegotiation
 import io.ktor.features.StatusPages
 import io.ktor.http.HttpStatusCode
+import io.ktor.http.cio.websocket.*
 import io.ktor.jackson.jackson
-import io.ktor.request.receive
-import java.util.*
+import io.ktor.websocket.WebSockets
+import java.time.Duration
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
@@ -40,8 +39,15 @@ fun Application.module() {
             }
         }
     }
+    install(WebSockets) {
+        pingPeriod = Duration.ofSeconds(60) // Disabled (null) by default
+        timeout = Duration.ofSeconds(15)
+        maxFrameSize = Long.MAX_VALUE // Disabled (max value). The connection will be closed if surpassed this length.
+        masking = false
+    }
     routing {
         snippetRoutes()
         authRoutes(simpleJwt)
+        chatWebSocketRoute()
     }
 }
