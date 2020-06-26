@@ -1,6 +1,7 @@
 package com.example
 
 import com.example.controllers.authRoutes
+import com.example.controllers.quoteRoutes
 import com.example.controllers.snippetRoutes
 import com.example.exceptions.InvalidCredentialsException
 import com.example.jwt.SimpleJWT
@@ -48,6 +49,7 @@ fun Application.module() {
     routing {
         snippetRoutes()
         authRoutes(simpleJwt)
+        quoteRoutes()
         chatWebSocketRoute()
     }
 }
